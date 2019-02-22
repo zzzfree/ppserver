@@ -1,0 +1,13 @@
+
+    {{ message }}
+    ol
+      li(v-for="v in data")
+        {{ v.path }} {{ v.isImage }}
+        OnVisible(topOffset="-20%", bottomOffset="-20%" , :repeat="true")  
+          div( slot-scope="{onVisible}" )
+            div(v-for="(value, key) in onVisible", :key="key")
+              h4
+                {{key}}
+              h5
+                {{value}}
+            imageitem( v-bind:v="v" )
