@@ -9,7 +9,8 @@ var file_path_sm = './public/images/AP2019-0005_sm.jpg';
 
 function resizeImage(path, res){
 
-    var file_path = _p + path;
+    var file_path =  path.replace(/\-{3}/ig,'/'); // _p + path; 
+
     var file_path_sm = './public/images/' + path.replace('.jpg', '_sm.jpg');
 
     console.log('start resize ' + file_path);
@@ -20,7 +21,9 @@ function resizeImage(path, res){
     .write(file_path_sm , 
     function(err){
         console.log("err: " + err);
+
         var p = file_path_sm.replace('./public/','../');
+
         console.log('Resized, redirecting to ' + p);
 
         setTimeout(function() {
@@ -54,6 +57,8 @@ var router = express.Router();
 router.get('/:name', function(req, res, next) {
 
     var p = './public/images/' + req.params.name.replace('.jpg', '_sm.jpg');
+
+    //p = req.params.name.replace('.jpg', '_sm.jpg').replace(/\-{3}/ig,'/');
 
     console.log( fs.existsSync(p) + ' ' + p);
 
