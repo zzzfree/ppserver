@@ -7,11 +7,15 @@ var _p = 'Y:/manwei.zeng/Accenture/Huang, Frimen Weiming - Photography/Photograp
 
 var file_path_sm = './public/images/AP2019-0005_sm.jpg';
 
+function toResizePath(p){
+   
+}
+
 function resizeImage(path, res){
 
     var file_path =  path.replace(/\-{3}/ig,'/'); // _p + path; 
 
-    var file_path_sm = './public/images/' + path.replace('.jpg', '_sm.jpg');
+    var file_path_sm = './public/images/' + escape( path.replace('.jpg', '_sm.jpg') );
 
     console.log('start resize ' + file_path);
     console.log('to  ' + file_path_sm);
@@ -56,7 +60,7 @@ var router = express.Router();
 /* GET users listing. */
 router.get('/:name', function(req, res, next) {
 
-    var p = './public/images/' + req.params.name.replace('.jpg', '_sm.jpg');
+    var p = './public/images/' + escape( req.params.name.replace('.jpg', '_sm.jpg') );
 
     //p = req.params.name.replace('.jpg', '_sm.jpg').replace(/\-{3}/ig,'/');
 
@@ -65,7 +69,7 @@ router.get('/:name', function(req, res, next) {
     if(fs.existsSync(p)){
         p = p.replace('./public/','../');
         console.log('Redirecting to ' + p);
-        res.redirect( p );
+        res.redirect(  p  );
         res.end();
         return;
     }
