@@ -7,11 +7,24 @@ var _p = 'Y:/manwei.zeng/Accenture/Huang, Frimen Weiming - Photography/Photograp
 
 var file_path_sm = './public/images/AP2019-0005_sm.jpg';
 
+
+const crypto = require('crypto');
+
+function md5(s){
+  const hash = crypto.createHash('md5');
+  hash.update(s);
+  return hash.digest('hex');
+}
+
+function toResizePath(path){
+    return md5(path) + '_sm.jpg';
+}
+
 function resizeImage(path, res){
 
     var file_path =  path.replace(/\-{3}/ig,'/'); // _p + path; 
 
-    var file_path_sm = './public/images/' + path.replace('.jpg', '_sm.jpg');
+    var file_path_sm = './public/images/' + toResizePath(path);
 
     console.log('start resize ' + file_path);
     console.log('to  ' + file_path_sm);
@@ -56,7 +69,7 @@ var router = express.Router();
 /* GET users listing. */
 router.get('/:name', function(req, res, next) {
 
-    var p = './public/images/' + req.params.name.replace('.jpg', '_sm.jpg');
+    var p = './public/images/' + toResizePath(  req.params.name );
 
     //p = req.params.name.replace('.jpg', '_sm.jpg').replace(/\-{3}/ig,'/');
 
