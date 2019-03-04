@@ -78,6 +78,8 @@ router.get('/:name', function(req, res, next) {
         var fp = req.params.name.replace(/\-{3}/ig,'/');
         readImage(fp, res); 
         return;      
+    }else if ( w>1200 ){
+        w = 1200;
     }
 
     //p = req.params.name.replace('.jpg', '_sm.jpg').replace(/\-{3}/ig,'/');
