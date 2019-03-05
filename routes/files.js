@@ -3,6 +3,7 @@ var _ = require('lodash');
 var router = express.Router();
 var fs = require("fs");
 
+var raws = ['CR2','ARW','NEF'];
 
 function convertPath(path){
     return path.replace(/\-{3}/ig,'/');
@@ -31,13 +32,15 @@ router.post('/remove', function(req, res, next) {
   var all = [];
 
   var file_path_sm = '';
+  var file_path_raw = '';
 
   try{
     _.each(req.body.files, v=>{
         var d = {
             path: v,
             success: false,
-            success_sm: false
+            success_sm: false,
+            success_raw: false
         }
 
         try{
@@ -56,7 +59,22 @@ router.post('/remove', function(req, res, next) {
             console.log( 'remove file sm error ' + file_path_sm );
             console.log(error);
         }
+
+        // remove raw files
+        _.each(raws,r=>{ 
+            try { 
+                file_path_raw = v.replace('.jpg', '.' + r); 
+                fs.unlinkSync(file_path_raw);
+                d.success_raw |= true; 
+                console.log( 'remove file raw success ' + file_path_raw );
+            } catch (error) { 
+                console.log( 'remove file raw error ' + file_path_raw );
+                console.log(error);
+            } 
+        });
+
         all.push( d )
+        console.log( d );
     });
      
     res.send(  all );  
