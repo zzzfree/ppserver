@@ -1,4 +1,5 @@
 var express = require('express');
+const { exec } = require('child_process');
 var _ = require('lodash');
 var router = express.Router();
 var fs = require("fs");
@@ -17,6 +18,28 @@ router.get('/:path', function(req, res, next) {
   try{
     var data = fs.readdirSync( convertPath(req.params.path) ); //./public/images'); 
     res.send(data);  
+  }catch(err){
+      res.send([]);
+  }
+
+});
+
+/* GET users listing. */
+router.get('/time/:path', function(req, res, next) {
+
+  console.log('time asc start.');
+
+  try{
+    var dir = convertPath(req.params.path);  
+
+    exec('ls -t ' + dir, (err, stdout, stderr) => {
+        if (err) {
+          console.error(err);
+          return;
+        }
+        res.send(stdout.split('\n'));
+      });
+
   }catch(err){
       res.send([]);
   }
@@ -60,7 +83,7 @@ router.post('/remove', function(req, res, next) {
             console.log(error);
         }
 
-        // remove raw files
+        /* remove raw files */
         _.each(raws,r=>{ 
             try { 
                 file_path_raw = v.replace('.jpg', '.' + r); 
