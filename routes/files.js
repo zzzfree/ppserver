@@ -86,7 +86,7 @@ router.post('/remove', function(req, res, next) {
         /* remove raw files */
         _.each(raws,r=>{ 
             try { 
-                file_path_raw = v.replace('.jpg', '.' + r); 
+                file_path_raw = v.replace(/\.jpg/ig, '.' + r); 
                 fs.unlinkSync(file_path_raw);
                 d.success_raw |= true; 
                 console.log( 'remove file raw success ' + file_path_raw );
